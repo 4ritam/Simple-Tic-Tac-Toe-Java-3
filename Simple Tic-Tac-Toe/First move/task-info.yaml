@@ -299,15 +299,8 @@ files:
     }
   learner_created: false
 feedback_link: https://hyperskill.org/learn/step/5400#comment
-status: Failed
+status: Solved
 feedback:
-  message: "Wrong answer in test #1\n\nThe first field is correct, but the second\
-    \ is not\n\nPlease find below the output of your program during this failed test.\n\
-    Note that the &#39;&gt;&#39; character indicates the beginning of the input line.\n\
-    \n---\n\nEnter cells: \n&gt; _XXOO_OX_\n---------\n| _ X X | \n| O O _ | \n| O\
-    \ X _ | \n---------\nEnter the coordinates: \n&gt; 1 1\n&gt; 1 2\nThis cell is\
-    \ occupied! Choose another one!\nThis cell is occupied! Choose another one!\n\
-    Enter the coordinates: \n&gt; 1 3\n&gt; 2 1\nThis cell is occupied! Choose another\
-    \ one!\n---------\n| _ X X | \n| O O _ | \n| O X _ | \n---------"
-  time: Fri, 25 Feb 2022 18:14:18 UTC
-record: -1
+  message: Congratulations!
+  time: Fri, 25 Feb 2022 19:22:57 UTC
+record: 4

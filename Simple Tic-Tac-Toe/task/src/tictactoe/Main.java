@@ -7,27 +7,30 @@ public class Main {
     public static void main(String[] args) {
 
         char[][] cell = new char[3][3];
+        boolean isPlaying = true;
+        int turn = 1;
 
         firstInput(cell);
 
-        newCoordinates(cell);
-        display(cell);
-        // check(cell);
+        while (isPlaying) {
+            if(turn % 2 == 1) {
+                newCoordinates(cell, 'X');
+            } else {
+                newCoordinates(cell, 'O');
+            }
+            if (check(cell)) {
+                isPlaying = false;
+            }
+            turn++;
+        }
 
     }
 
     public static void firstInput(char[][] cell) {
 
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter cells: ");
-        String cells = scanner.next();
-
-
-
         for (int i = 0; i < cell.length; i++) {
             for (int j = 0; j < cell[0].length; j++) {
-                cell[i][j] = cells.charAt(i * cell[0].length + j);
+                cell[i][j] = '_';
             }
         }
 
@@ -45,7 +48,11 @@ public class Main {
                 } else if (j == 0 || j == cell[0].length + 1) {
                     System.out.print("| ");
                 } else {
-                    System.out.print(cell[i-1][j-1] + " ");
+                    if (cell[i-1][j-1] == '_'){
+                        System.out.print("  ");
+                    } else {
+                        System.out.print(cell[i - 1][j - 1] + " ");
+                    }
                 }
             }
             System.out.println();
@@ -53,8 +60,9 @@ public class Main {
 
     }
 
-    public static void newCoordinates(char[][] cells) {
+    public static void newCoordinates(char[][] cells, char x) {
 
+        Scanner scanner = new Scanner(System.in);
 
         String[] inputString = new String[2];
 
@@ -62,31 +70,40 @@ public class Main {
 
         boolean takeInput = true;
 
+        boolean toCheck = false;
+
         do {
-            System.out.println("Enter the coordinates: ");
 
-            inputString[0] = checkNum();
+            System.out.print("Enter the coordinates: ");
 
-            if (inputString[0] == null) {
+            inputString[0] = scanner.next();
+
+            if (!checkNum(inputString[0])) {
                 continue;
             }
 
-            inputString[1] = checkNum();
+            inputString[1] = scanner.next();
 
-            if (inputString[1] == null) {
+            if (!checkNum(inputString[1])) {
                 continue;
             }
 
 
             for (int i = 0; i < 2; i++) {
 
+                toCheck = false;
+
                 inputs[i] = Integer.parseInt(inputString[i]);
 
-                System.out.println(inputs[i]);
-
-                if (inputs[i] > 2 || inputs[i] < 0) {
+                if (inputs[i] > 3 || inputs[i] < 1) {
                     System.out.println("Coordinates should be from 1 to 3!");
-                } else if (cells[inputs[0]][inputs[1]] != '_') {
+                    break;
+                }
+                toCheck = true;
+            }
+
+            if (toCheck) {
+                if (cells[inputs[0] - 1][inputs[1] - 1] != '_') {
                     System.out.println("This cell is occupied! Choose another one!");
                 } else {
                     takeInput = false;
@@ -94,25 +111,25 @@ public class Main {
             }
         } while (takeInput);
 
-        cells[inputs[0] - 1][inputs[1] - 1] = 'X';
+        cells[inputs[0] - 1][inputs[1] - 1] = x;
 
+        display(cells);
 
     }
 
-    public static String checkNum() {
+    public static boolean checkNum(String s) {
 
-        Scanner scanner = new Scanner(System.in);
-
-        if (scanner.hasNextInt()) {
-            return Integer.toString(scanner.nextInt());
-        } else {
+        try {
+            int x = Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
             System.out.println("You should enter numbers!");
-            return null;
+            return false;
         }
 
     }
 
-    public static void check(char[][] cell) {
+    public static boolean check(char[][] cell) {
 
         int[] numberOfMoves = {0, 0, 0};
 
@@ -132,6 +149,7 @@ public class Main {
 
         if (difference > 1 || difference < -1) {
             System.out.println("Impossible");
+            return true;
         } else {
             boolean[] checker = {false, false};
 
@@ -162,15 +180,19 @@ public class Main {
 
             if (checker[0] && checker[1]) {
                 System.out.println("Impossible");
+                return true;
             } else if (checker[0]) {
                 System.out.println("X wins");
+                return true;
             } else if (checker[1]) {
                 System.out.println("O wins");
+                return true;
             } else {
                 if (numberOfMoves[2] == 0) {
                     System.out.println("Draw");
+                    return true;
                 } else {
-                    System.out.println("Game not finished");
+                    return false;
                 }
             }
         }
